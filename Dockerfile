@@ -8,7 +8,7 @@ COPY package*.json ./
 
 # 3. 핵심 수정: 쉘(/bin/sh)을 거치지 않고 직접 실행하도록 배열 형태를 씁니다.
 # 이렇게 하면 줄바꿈 문자가 섞여도 npm을 정확히 찾아 실행합니다.
-RUN ["npm", "install", "--production"]
+RUN ["npm", "install", "--production", "--ignore-scripts"]
 
 COPY . .
 
