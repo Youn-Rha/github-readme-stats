@@ -1,5 +1,5 @@
 # 1. 가벼운 Node.js 버전 선택
-FROM node:18
+FROM node:22-slim
 
 # 2. 컨테이너 내부 작업 디렉토리 설정
 WORKDIR /app
