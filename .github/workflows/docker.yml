@@ -1,0 +1,36 @@
+name: Docker Image CI/CD
+
+on:
+  push:
+    branches: [ "master", "main" ]  # 메인 브랜치에 푸시될 때 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # GHCR에 이미지를 쓰기 위한 권한
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # 이미지를 linux/amd64(미니PC용)와 linux/arm64(맥/라즈베리용) 모두 빌드
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/github-readme-stats:latest
