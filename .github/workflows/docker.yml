@@ -31,5 +31,5 @@ jobs:
           context: .
           push: true
           # 이미지를 linux/amd64(미니PC용)와 linux/arm64(맥/라즈베리용) 모두 빌드
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           tags: ghcr.io/${{ secrets.IMAGE_NAME }}:latest
