@@ -1,20 +1,18 @@
-# 1. 가벼운 Node.js 버전 선택
-FROM node:22-slim
+# 1. 아키텍처 호환성이 좋은 기본 이미지 사용
+FROM node:22
 
-# 2. 컨테이너 내부 작업 디렉토리 설정
 WORKDIR /app
 
-# 3. 패키지 설치를 위해 파일 복사
+# 2. 파일 복사
 COPY package*.json ./
 
-# 4. 의존성 설치 (express를 dependencies로 옮긴 상태여야 합니다!)
-RUN npm install --production
+# 3. 핵심 수정: 쉘(/bin/sh)을 거치지 않고 직접 실행하도록 배열 형태를 씁니다.
+# 이렇게 하면 줄바꿈 문자가 섞여도 npm을 정확히 찾아 실행합니다.
+RUN ["npm", "install", "--production"]
 
-# 5. 소스 코드 전체 복사
 COPY . .
 
-# 6. 서버가 사용할 포트 개방
 EXPOSE 8080
 
-# 7. 서버 실행 (공식 가이드에 따라 express.js 실행)
+# 4. 실행 명령도 배열 형태로 작성합니다.
 CMD ["node", "express.js"]
